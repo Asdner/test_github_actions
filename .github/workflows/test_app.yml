@@ -22,3 +22,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run tests
         run: python -m pytest
+      - name: Run mypy
+        run: python -m mypy src/
+      - name: Run black
+        run: python -m black --diff --check src/
+      - name: Run isort
+        run: python -m isort --check-only src/
+      - name: Run flake8
+        run: python -m flake8 src/
