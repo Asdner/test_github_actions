@@ -20,6 +20,7 @@ jobs:
       # Устанавливаем зависимости
       - name: Install requirements
         run: pip install -r requirements.txt
+      # Запускаем тесты
       - name: Run tests
         run: python -m pytest
       - name: Run mypy
