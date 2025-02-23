@@ -29,3 +29,5 @@ jobs:
         run: python -m isort --check-only --profile black src/
       - name: Run flake8
         run: python -m flake8 src/
+      - name: Run mypy
+        run: python -m mypy src/

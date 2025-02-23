@@ -2,6 +2,7 @@ from typing import List, Sequence
 
 import uvicorn
 from fastapi import Depends, FastAPI
+from sqlalchemy import Column
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -9,7 +10,6 @@ from sqlalchemy.orm import selectinload
 import schemas
 from database import Base, engine, get_session
 from models import Ingredient, Recipe
-
 
 app = FastAPI()
 
@@ -117,11 +117,9 @@ async def recipes_all(session: AsyncSession = Depends(get_session)) -> Sequence[
     tags=["Recipes"],
     summary="Return one recipe",
 )
-
-
 async def recipes_one(
-        recipe_id: int, session: AsyncSession = Depends(get_session)
-    ) -> Recipe | None:
+    recipe_id: int, session: AsyncSession = Depends(get_session)
+) -> Recipe | None:
     """Возвращает рецепт с описанием деталей."""
     execution = await session.execute(
         select(Recipe)
@@ -132,7 +130,6 @@ async def recipes_one(
 
     if recipe:
         recipe.views += 1  # Увеличиваем количество просмотров
-        session.add(recipe)  # Добавляем обновленный объект в сессию
         await session.commit()  # Сохраняем изменения в базе данных
 
     return recipe
