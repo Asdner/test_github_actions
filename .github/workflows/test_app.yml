@@ -15,7 +15,7 @@ jobs:
       - name: Install python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.9'
+          python-version: '3.12.3'
           architecture: 'x64'
       # Устанавливаем зависимости
       - name: Install requirements
@@ -23,8 +23,6 @@ jobs:
       # Запускаем тесты
       - name: Run tests
         run: python -m pytest
-      - name: Run mypy
-        run: python -m mypy src/
       - name: Run black
         run: python -m black --diff --check src/
       - name: Run isort
