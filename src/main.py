@@ -2,9 +2,9 @@ from typing import List, Sequence
 
 import uvicorn
 from fastapi import Depends, FastAPI
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload, sessionmaker
+from sqlalchemy.orm import selectinload
 
 import schemas
 from database import Base, engine, get_session
@@ -15,7 +15,7 @@ app = FastAPI()
 
 
 async def fill_db(eng):
-    app_session = sessionmaker(eng, expire_on_commit=False, class_=AsyncSession)()
+    app_session = async_sessionmaker(eng, expire_on_commit=False, class_=AsyncSession)()
     res = await app_session.execute(select(Recipe))
     if res.first():
         return

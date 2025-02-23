@@ -9,6 +9,7 @@ recipes_ingredients_table = Table(
     Base.metadata,
     Column("recipe_id", ForeignKey("recipes.id"), primary_key=True),
     Column("ingredient_id", ForeignKey("ingredients.id"), primary_key=True),
+    # extend_existing=True  # Позволяет переопределить существующую таблицу
 )
 
 

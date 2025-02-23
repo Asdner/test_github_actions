@@ -4,10 +4,11 @@ from typing import AsyncGenerator
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.orm import sessionmaker
 
-from src.database import Base, get_session
-from src.main import app
-from src.models import Ingredient, Recipe
+from database import Base, get_session
+from main import app
+from models import Ingredient, Recipe
 
 TEST_DATABASE_URL = "sqlite+aiosqlite:///./test.db"
 engine = create_async_engine(
@@ -25,7 +26,7 @@ app.dependency_overrides[get_session] = get_session_overrides
 
 
 async def add_test_recipes():
-    async_session = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)()
+    add_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)()
     recipe1 = Recipe(
         id=1,
         title="recipe1_Test",
@@ -40,8 +41,8 @@ async def add_test_recipes():
         description="Test2",
         ingredients=[Ingredient(name="Test2"), Ingredient(name="Test3")],
     )
-    async_session.add_all([recipe1, recipe2])
-    await async_session.commit()
+    add_session.add_all([recipe1, recipe2])
+    await add_session.commit()
     return recipe1.id, recipe2.id
 
 
